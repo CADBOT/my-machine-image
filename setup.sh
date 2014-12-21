@@ -5,7 +5,7 @@ cd /tmp
 
 # Setup shell
 sudo apt-get -y install fish
-sudo chsh -s /usr/bin/fish ubuntu
+sudo chsh -s /usr/bin/fish $SUDO_USER
 
 sudo apt-get -y install tmux
 sudo apt-get -y install build-essential automake
@@ -36,49 +36,21 @@ cd ruby-install-0.4.3/
 sudo make install
 cd ..
 
-# Patch ruby
+# install more recent ruby
+CC=clang ruby-install ruby 2.1.5
 
-tee fix-readline.patch << EOF
-From 4c4da3fc650a3595ecc06f49072f1ffae07db706 Mon Sep 17 00:00:00 2001
-From: Thomas Dziedzic <gostrc@gmail.com>
-Date: Sat, 1 Mar 2014 21:41:28 -0800
-Subject: [PATCH] Fix undeclared identifier error by using the actual type of
- rl_pre_input_hook
-
----
- ext/readline/readline.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/ext/readline/readline.c b/ext/readline/readline.c
-index 659adb9..7bc0eed 100644
---- a/ext/readline/readline.c
-+++ b/ext/readline/readline.c
-@@ -1977,7 +1977,7 @@ Init_readline()
-
-     rl_attempted_completion_function = readline_attempted_completion_function;
- #if defined(HAVE_RL_PRE_INPUT_HOOK)
--    rl_pre_input_hook = (Function *)readline_pre_input_hook;
-+    rl_pre_input_hook = (rl_hook_func_t *)readline_pre_input_hook;
- #endif
- #ifdef HAVE_RL_CATCH_SIGNALS
-     rl_catch_signals = 0;
---
-1.9.0
-EOF
-ruby-install -p fix-readline.patch ruby 2.1.1
-
-# invocke chruby so gems are installed for custom ruby instead of the system one
-. /usr/local/share/chruby/chruby.sh
-chruby ruby-2.1.1
+# Install homesick into the ruby version just installed
+/opt/rubies/ruby-2.1.5/bin/gem install homesick
 
 # Install the gems I use TODO: extract to gemfile
-gem install homesick
 
 # Setup dotfiles through homesick
 homesick clone CADBOT/dotfiles
+#TODO will currently break if ~/.config is already there!
 homesick symlink dotfiles
 
 # setup vundle plugins
+# TODO: there is a plugin that breaks the script by hanging
 git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 vim +PluginInstall +qall
 
@@ -90,5 +62,3 @@ cd ~/.vim/bundle/YouCompleteMe
 
 # use a vim with Ruby scritping installed so YCM ruby autocomplete works
 sudo apt-get -y install vim-nox
-
-
