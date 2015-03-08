@@ -1,7 +1,11 @@
 #!/bin/sh
 # Based on Ubuntu Server 14.04 LTS (HVM) - ami-6cc2a85c
+set -o verbose
 
 cd /tmp
+
+sudo apt-get install update
+sudo apt-get -y install wget
 
 # Setup shell
 sudo apt-get -y install fish
