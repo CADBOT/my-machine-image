@@ -4,7 +4,7 @@ set -o verbose
 
 cd /tmp
 
-sudo apt-get install update
+sudo apt-get update
 sudo apt-get -y install wget
 
 # Setup shell
@@ -41,7 +41,7 @@ sudo make install
 cd ..
 
 # install more recent ruby
-CC=clang ruby-install ruby 2.1.5
+ruby-install ruby 
 
 # Install homesick into the ruby version just installed
 /opt/rubies/ruby-2.1.5/bin/gem install homesick
