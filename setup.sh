@@ -41,17 +41,17 @@ sudo make install
 cd ..
 
 # install more recent ruby
-ruby-install ruby 
+ruby-install ruby 2.1.3
 
 # Install homesick into the ruby version just installed
-/opt/rubies/ruby-2.1.5/bin/gem install homesick
+/opt/rubies/ruby-2.1.3/bin/gem install homesick
 
 # Install the gems I use TODO: extract to gemfile
 
 # Setup dotfiles through homesick
-homesick clone CADBOT/dotfiles
+/opt/rubies/ruby-2.1.3/bin/homesick clone CADBOT/dotfiles
 #TODO will currently break if ~/.config is already there!
-homesick symlink dotfiles
+/opt/rubies/ruby-2.1.3/bin/homesick symlink dotfiles
 
 # setup vundle plugins
 # TODO: there is a plugin that breaks the script by hanging
